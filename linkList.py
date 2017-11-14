@@ -65,6 +65,46 @@ class LinkList:
          temp = temp.getNextNode();
       return None
 
+   #PURPOSE:   Finds the data for the node in the position given
+   #INPUT:     nth      - The node position to get the data
+   #OUTPUT:    Returns the data for the node at the given position else return None
+   def findNthNode(self, nth):
+      temp = self.head
+      pos = 0
+      while temp != None:
+         if pos == nth:
+            return temp.getData();
+         pos += 1
+         temp = temp.getNextNode();
+      return None
+
+   #PURPOSE:   Counts the number of nodes in the list and return amount
+   #INPUT:     NONE
+   #OUTPUT:    Returns number of node in the list
+   def count(self):
+      temp = self.head
+      pos = 0
+      while temp != None:
+         pos += 1
+         temp = temp.getNextNode();
+      return pos
+
+   #PURPOSE:   Finds the data for the middle of the list
+   #INPUT:     NONE
+   #OUTPUT:    Returns the data for the middle of the list else return None
+   def findListMiddle(self):
+      temp = self.head
+      count  = self.count()/2
+      pos = 0
+      if count % 2 == 0:
+         count += 1
+      while temp != None:
+         if pos == count:
+            return temp.getData();
+         pos += 1
+         temp = temp.getNextNode();
+      return None
+
    #PURPOSE:   Removes node at the end of the list
    #INPUT:     NONE
    #OUTPUT:    NONE
