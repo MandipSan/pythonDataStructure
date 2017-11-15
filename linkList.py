@@ -2,7 +2,7 @@
 
 from node import *
 
-class LinkList:
+class LinkList(object):
 
    #PURPOSE:   Set the head and end to default value of None
    #INPUT:     NONE
