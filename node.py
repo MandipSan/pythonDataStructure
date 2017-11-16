@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-class Node:
+class Node(object):
 
    #PURPOSE:   Set node's prevNode, nextNode and data to default values
    #INPUT:     data        - The data the node will hold
