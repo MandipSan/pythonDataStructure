@@ -16,9 +16,8 @@ class LinkList(object):
    #OUTPUT:    NONE
    def addAtEnd(self, data):
       temp = Node(data)
-      if self.head == None:      
+      if self.end == None:      
          self.head = temp
-      if self.end == None:
          self.end = temp
       else:
          self.end.setNextNode(temp)
@@ -30,9 +29,8 @@ class LinkList(object):
    #OUTPUT:    NONE
    def addAtBeginning(self, data):
       temp = Node(data)
-      if self.end == None:
-         self.end = temp
       if self.head == None:
+         self.end = temp
          self.head = temp
       else:
          self.head.setPrevNode(temp)
