@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+from node import *
+
 class TreeNode(Node):
 
    #PURPOSE:   Set node's value to default values
@@ -26,6 +28,12 @@ class TreeNode(Node):
    #OUTPUT:    NONE 
    def setLeftNode(self, leftNode):
       super(TreeNode, self).setPrevNode(leftNode)
+
+   #PURPOSE:   Set the node's data
+   #INPUT:     data        - The data to reset the data to   
+   #OUTPUT:    NONE 
+   def setData(self, data):
+      self.data = data
 
    #PURPOSE:   Returns the node's parent node
    #INPUT:     NONE
