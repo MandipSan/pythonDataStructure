@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+#Created By:      Mandip Sangha
+#Last Modified:   11/23/2017
+
 from treeNode import *
 from stack import *
 
@@ -25,7 +28,7 @@ class BSTree(object):
                  currentNode = currentNode.getLeftNode()
               else:
                  newNode = TreeNode(data)
-                 newNode.setParentNode(currentNode)
+                 #newNode.setParentNode(currentNode)
                  currentNode.setLeftNode(newNode)
                  break
            else: 
@@ -33,7 +36,7 @@ class BSTree(object):
                  currentNode = currentNode.getRightNode()
               else:
                  newNode = TreeNode(data)
-                 newNode.setParentNode(currentNode)
+                 #newNode.setParentNode(currentNode)
                  currentNode.setRightNode(newNode)
                  break
 
@@ -145,7 +148,7 @@ class BSTree(object):
 
 
 #****************************************************************************
-#Recursive Version
+#Recursive Version of Methods
 #****************************************************************************
 
    #PURPOSE:   Insert a node into the tree
@@ -177,14 +180,11 @@ class BSTree(object):
       #if node has child or right child only
       elif rCurrentNode.getLeftNode() != None or rCurrentNode.getRightNode() != None:
          tempPar = rCurrentNode.getParentNode()
-
          if rCurrentNode.getLeftNode() != None:
             tempChild = rCurrentNode.getLeftNode()
          else: 
             tempChild = rCurrentNode.getRightNode()
-
          tempChild.setParentNode(tempPar)
-         
          if tempPar == None:
             self.root = tempChild
          else:
@@ -192,7 +192,6 @@ class BSTree(object):
                tempPar.setLeftNode(tempChild)
             else:
                tempPar.setRightNode(tempChild)
-
          del rCurrentNode
       #if node has no children
       else:
@@ -203,7 +202,6 @@ class BSTree(object):
                rCurrentNode.getParentNode().setLeftNode(None)
             else:
                rCurrentNode.getParentNode().setRightNode(None)
-
          del rCurrentNode
    
    #PURPOSE:   Find the node for the data given
