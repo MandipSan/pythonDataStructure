@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+#Created By:      Mandip Sangha
+#Last Modified:   11/23/2017
+
 class Node(object):
 
    #PURPOSE:   Set node's prevNode, nextNode and data to default values

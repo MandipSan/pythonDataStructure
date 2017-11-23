@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+#Created By:      Mandip Sangha
+#Last Modified:   11/23/2017
+
 from node import *
 
 class LinkList(object):
