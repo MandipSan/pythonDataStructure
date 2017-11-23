@@ -32,9 +32,7 @@ class Stack(LinkList):
    #INPUT:     NONE
    #OUTPUT:    Return's true if the stack isn't empty
    def isEmpty(self):
-      if super(Stack, self).count() == 0:
-         return True
-      return False
+      return super(Stack, self).count() == 0
 
    #PURPOSE:   Gets the size of the stack
    #INPUT:     NONE
