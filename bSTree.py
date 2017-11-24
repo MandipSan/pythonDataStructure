@@ -46,7 +46,47 @@ class BSTree(object):
    #PURPOSE:   Remove node of the given data from the tree 
    #INPUT:     data           - The data to be removed from the tree
    #OUTPUT:    NONE
-#   def removeNode(self, data):
+   def removeNode(self, data):
+      currentNode = self.root
+      tempPar = None
+
+      while currentNode != None:
+         if currentNode.getData() > data:
+            tempPar = currentNode
+            currentNode = currentNode.getLeftNode()
+         elif currentNode.getData() < data:
+            tempPar = currentNode
+            currentNode = currentNode.getRightNode()
+         else:
+            if currentNode.getLeftNode() != None and currentNode.getRightNode() != None:
+               temp = currentNode.getRightNode()
+               tempP = currentNode
+               dataTemp = None
+               while temp != None:
+                  if temp.getLeftNode() == None:
+                     if temp == currentNode.getRightNode():
+                        currentNode.setRightNode(None)
+                     else:
+                        tempP.setLeftNode(None)
+                     dataTemp = temp.getData()
+                     del temp
+                     temp = None
+                  else:
+                     tempP = temp
+                     temp = temp.getLeftNode()
+               currentNode.setData(dataTemp)
+               return
+            elif currentNode.getLeftNode() != None:
+               tempPar.setLeftNode(currentNode.getLeftNode)
+            elif currentNode.getRightNode() != None:
+               tempPar.setRightNode(currentNode.getRightNode)
+            else:
+               if tempPar.getLeftNode() == currentNode:
+                  tempPar.setLeftNode(None)
+               else:
+                  tempPar.setRightNode(None)
+            del currentNode
+            currentNode = None
 
    #PURPOSE:   Find the node for the data given
    #INPUT:     data           - The data for the node to be found
