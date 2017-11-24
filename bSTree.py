@@ -5,6 +5,7 @@
 
 from treeNode import *
 from stack import *
+from queue import *
 
 class BSTree(object):
 
@@ -13,6 +14,10 @@ class BSTree(object):
    #OUTPUT:    NONE
    def __init__(self):
       self.root = None
+
+#****************************************************************************
+#Non Recursive Version of Methods
+#****************************************************************************
 
    #PURPOSE:   Insert a node into the tree
    #INPUT:     data           - The data to insert into the tree
@@ -28,7 +33,6 @@ class BSTree(object):
                  currentNode = currentNode.getLeftNode()
               else:
                  newNode = TreeNode(data)
-                 #newNode.setParentNode(currentNode)
                  currentNode.setLeftNode(newNode)
                  break
            else: 
@@ -36,7 +40,6 @@ class BSTree(object):
                  currentNode = currentNode.getRightNode()
               else:
                  newNode = TreeNode(data)
-                 #newNode.setParentNode(currentNode)
                  currentNode.setRightNode(newNode)
                  break
 
@@ -146,6 +149,72 @@ class BSTree(object):
             printStack.push(currentNode)
             currentNode = currentNode.getLeftNode()
 
+   #PURPOSE:   Print's the tree by it's levels starting from the root(breadth first)
+   #INPUT:     NONE
+   #OUTPUT:    NONE
+   def printAllLevel(self):
+      tempQue = Queue()
+      tempQue.enqueue(self.root)
+      while not tempQue.isEmpty():
+         currentNode = tempQue.front()
+         tempQue.dequeue()
+         print currentNode.getData()
+         if currentNode.getLeftNode() != None:
+            tempQue.enqueue(currentNode.getLeftNode())
+         if currentNode.getRightNode() != None:
+            tempQue.enqueue(currentNode.getRightNode())
+  
+   #PURPOSE:   Print's the level given from the node given when level equals one(breadth first)
+   #INPUT:     level          - The current level 
+   #OUTPUT:    NONE
+   def printOneLevel(self, level):
+      curLevel = 1
+      numOfNodeAtCurLvl = 1
+      numOfNodeAtNextLvl = 0
+      tempQue = Queue()
+      tempQue.enqueue(self.root)
+      while not tempQue.isEmpty():
+         currentNode = tempQue.front()
+         tempQue.dequeue()
+         numOfNodeAtCurLvl -= 1
+         if curLevel != level:
+            if currentNode.getLeftNode() != None:
+               tempQue.enqueue(currentNode.getLeftNode())
+               numOfNodeAtNextLvl += 1
+            if currentNode.getRightNode() != None:
+               tempQue.enqueue(currentNode.getRightNode())
+               numOfNodeAtNextLvl += 1
+            if numOfNodeAtCurLvl == 0:
+               numOfNodeAtCurLvl = numOfNodeAtNextLvl
+               numOfNodeAtNextLvl = 0
+               curLevel += 1
+         else:
+            print currentNode.getData()
+
+   #PURPOSE:   Return's the height of the tree
+   #INPUT:     NONE
+   #OUTPUT:    Return's the height of the tree
+   def getHeight(self):
+      curLevel = 0
+      numOfNodeAtCurLvl = 1
+      numOfNodeAtNextLvl = 0
+      tempQue = Queue()
+      tempQue.enqueue(self.root)
+      while not tempQue.isEmpty():
+         currentNode = tempQue.front()
+         tempQue.dequeue()
+         numOfNodeAtCurLvl -= 1
+         if currentNode.getLeftNode() != None:
+            tempQue.enqueue(currentNode.getLeftNode())
+            numOfNodeAtNextLvl += 1
+         if currentNode.getRightNode() != None:
+            tempQue.enqueue(currentNode.getRightNode())
+            numOfNodeAtNextLvl += 1
+         if numOfNodeAtCurLvl == 0:
+            numOfNodeAtCurLvl = numOfNodeAtNextLvl
+            numOfNodeAtNextLvl = 0
+            curLevel += 1
+      return curLevel
 
 #****************************************************************************
 #Recursive Version of Methods
@@ -167,42 +236,35 @@ class BSTree(object):
 
    #PURPOSE:   Remove node of the given data from the tree 
    #INPUT:     data           - The data to be removed from the tree
+   #           currentNode    - The node to check
    #OUTPUT:    NONE
-   def recRemoveNode(self, data):
-      rCurrentNode = self.recFindNode(data, self.root)
-      if rCurrentNode == None:
-         return
-      #if node has both children
-      if rCurrentNode.getLeftNode() != None and rCurrentNode.getRightNode() != None:
-         cData = self.recFindSmallestNodeData(rCurrentNode.getRightNode())
-         self.recRemoveNode(cData)
-         rCurrentNode.setData(cData)
-      #if node has child or right child only
-      elif rCurrentNode.getLeftNode() != None or rCurrentNode.getRightNode() != None:
-         tempPar = rCurrentNode.getParentNode()
-         if rCurrentNode.getLeftNode() != None:
-            tempChild = rCurrentNode.getLeftNode()
-         else: 
-            tempChild = rCurrentNode.getRightNode()
-         tempChild.setParentNode(tempPar)
-         if tempPar == None:
-            self.root = tempChild
-         else:
-            if tempPar.getLeftNode() == rCurrentNode:
-               tempPar.setLeftNode(tempChild)
-            else:
-               tempPar.setRightNode(tempChild)
-         del rCurrentNode
-      #if node has no children
+   def recRemoveNode(self, data, currentNode):
+      if currentNode == None:
+         return None
+         
+      if currentNode.getData() > data:
+         currentNode.setLeftNode(self.recRemoveNode(data, currentNode.getLeftNode())) 
+      elif currentNode.getData() < data:
+         currentNode.setRightNode(self.recRemoveNode(data, currentNode.getRightNode()))
       else:
-         if rCurrentNode.getParentNode() == None:
-            self.root = None
+         #if node has both children
+         if currentNode.getLeftNode() != None and currentNode.getRightNode() != None:
+            cData = self.recFindSmallestNodeData(currentNode.getRightNode())
+            currentNode.setRightNode(self.recRemoveNode(cData, currentNode.getRightNode()))
+            currentNode.setData(cData)
+         #if node has left child or right child only
+         elif currentNode.getLeftNode() != None or currentNode.getRightNode() != None:
+            if currentNode.getLeftNode() != None:
+               tempChild = currentNode.getLeftNode()
+            else: 
+               tempChild = currentNode.getRightNode()
+            del currentNode
+            return tempChild
+         #if node has no children
          else:
-            if rCurrentNode.getParentNode().getLeftNode() == rCurrentNode:
-               rCurrentNode.getParentNode().setLeftNode(None)
-            else:
-               rCurrentNode.getParentNode().setRightNode(None)
-         del rCurrentNode
+            del currentNode
+            return None
+      return currentNode
    
    #PURPOSE:   Find the node for the data given
    #INPUT:     data           - The data for the node to be found
@@ -257,7 +319,7 @@ class BSTree(object):
       self.recPrintPostOrder(currentNode.getRightNode())
       print currentNode.getData() 
 
-   #PURPOSE:   Print's the tree by it's levels starting from the root
+   #PURPOSE:   Print's the tree by it's levels starting from the root(breadth first)
    #INPUT:     NONE
    #OUTPUT:    NONE
    def recPrintAllLevel(self):
