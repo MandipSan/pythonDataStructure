@@ -1,7 +1,13 @@
 #!/usr/bin/python
 
 #Created By:      Mandip Sangha
-#Last Modified:   11/23/2017
+#Last Modified:   11/24/2017
+
+#****************************************************************************
+#NOTE:
+#The left and right node comparison for greater than and lesser than is for
+# number values. Uses of other types of values can cause known results
+#**************************************************************************** 
 
 from treeNode import *
 from stack import *
