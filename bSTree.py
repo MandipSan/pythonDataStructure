@@ -238,24 +238,24 @@ class BSTree(object):
          else:
             print currentNode.getData()
 
-   #PURPOSE:   Return's the height of the tree
-   #INPUT:     NONE
+   #PURPOSE:   Return's the height of the tree from the given start node
+   #INPUT:     currentNode    - The node start the height from
    #OUTPUT:    Return's the height of the tree
-   def getHeight(self):
+   def getHeight(self, currentNode):
       curLevel = 0
       numOfNodeAtCurLvl = 1
       numOfNodeAtNextLvl = 0
       tempQue = Queue()
-      tempQue.enqueue(self.root)
+      tempQue.enqueue(currentNode)
       while not tempQue.isEmpty():
-         currentNode = tempQue.front()
+         currNode = tempQue.front()
          tempQue.dequeue()
          numOfNodeAtCurLvl -= 1
-         if currentNode.getLeftNode() != None:
-            tempQue.enqueue(currentNode.getLeftNode())
+         if currNode.getLeftNode() != None:
+            tempQue.enqueue(currNode.getLeftNode())
             numOfNodeAtNextLvl += 1
-         if currentNode.getRightNode() != None:
-            tempQue.enqueue(currentNode.getRightNode())
+         if currNode.getRightNode() != None:
+            tempQue.enqueue(currNode.getRightNode())
             numOfNodeAtNextLvl += 1
          if numOfNodeAtCurLvl == 0:
             numOfNodeAtCurLvl = numOfNodeAtNextLvl
@@ -386,8 +386,8 @@ class BSTree(object):
          self.recPrintOneLevel(currentNode.getLeftNode(),level-1)
          self.recPrintOneLevel(currentNode.getRightNode(), level-1)
    
-   #PURPOSE:   Return's the height of the tree
-   #INPUT:     currentNode    - The current node to check
+   #PURPOSE:   Return's the height of the tree from the given start node
+   #INPUT:     currentNode    - The node to start checking the height from
    #OUTPUT:    Return's the height of the tree
    def recGetHeight(self, currentNode):
       if currentNode == None:
