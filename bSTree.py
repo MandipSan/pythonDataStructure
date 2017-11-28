@@ -246,7 +246,8 @@ class BSTree(object):
       numOfNodeAtCurLvl = 1
       numOfNodeAtNextLvl = 0
       tempQue = Queue()
-      tempQue.enqueue(currentNode)
+      if currentNode != None:
+         tempQue.enqueue(currentNode)
       while not tempQue.isEmpty():
          currNode = tempQue.front()
          tempQue.dequeue()
