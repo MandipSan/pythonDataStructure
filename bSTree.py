@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 #Created By:      Mandip Sangha
-#Last Modified:   11/27/2017
+#Last Modified:   11/28/2017
 
 #****************************************************************************
 #NOTE:
@@ -83,15 +83,27 @@ class BSTree(object):
                      temp = temp.getLeftNode()
                currentNode.setData(dataTemp)
                return
-            elif currentNode.getLeftNode() != None:
-               tempPar.setLeftNode(currentNode.getLeftNode)
-            elif currentNode.getRightNode() != None:
-               tempPar.setRightNode(currentNode.getRightNode)
-            else:
-               if tempPar.getLeftNode() == currentNode:
-                  tempPar.setLeftNode(None)
+            elif currentNode.getLeftNode() != None or currentNode.getRightNode() != None:
+               tempChild = None
+               if currentNode.getLeftNode() != None:
+                  tempChild = currentNode.getLeftNode()
+               elif currentNode.getRightNode() != None:
+                  tempChild = currentNode.getRightNode()
+               if tempPar != None:
+                  if tempPar.getLeftNode() == currentNode:
+                     tempPar.setLeftNode(tempChild)
+                  else:
+                     tempPar.setRightNode(tempChild)
                else:
-                  tempPar.setRightNode(None)
+                  self.root = tempChild
+            else:
+               if tempPar != None:
+                  if tempPar.getLeftNode() == currentNode:
+                     tempPar.setLeftNode(None)
+                  else:
+                     tempPar.setRightNode(None)
+               else:
+                  self.root = None
             del currentNode
             currentNode = None
 
