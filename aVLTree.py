@@ -1,12 +1,11 @@
 #!/usr/bin/python
 
 #Created By:      Mandip Sangha
-#Last Modified:   11/27/2017
+#Last Modified:   11/28/2017
 
 from bSTree import *
 
 class AVLTree(BSTree):
-   
 
    #PURPOSE:   Set the tree defualt values
    #INPUT:     NONE
@@ -119,6 +118,64 @@ class AVLTree(BSTree):
             else:
                self.root = tempNode
                break;
+
+   def removeNode(self, data):
+      super(AVLTree, self).removeNode(data)
+      
+      currentNode = None
+      parCurNode = None
+      if not self.isSubTreeBalanced(self.root):
+         if not self.isSubTreeBalanced(self.root.getLeftNode()):
+            parCurNode = self.root
+            currentNode = self.root.getLeftNode()
+         elif not self.isSubTreeBalanced(self.root.getRightNode()):
+            parCurNode = self.root
+            currentNode = self.root.getRightNode()
+         else:
+            currentNode = self.root
+
+      while currentNode != None:
+         #To move to the node that is one level above the unbalances
+         if not self.isSubTreeBalanced(currentNode.getLeftNode()):
+            parCurNode = currentNode
+            currentNode = currentNode.getLeftNode()
+         elif not self.isSubTreeBalanced(currentNode.getRightNode()):
+            parCurNode = currentNode
+            currentNode = currentNode.getRightNode()
+         #Rebalances the tree 
+         else:
+            tempNode = None
+            curBalance = super(AVLTree, self).getHeight(currentNode.getLeftNode()) - super(AVLTree, self).getHeight(currentNode.getRightNode())
+            curLBalance = 0
+            curRBalance = 0
+            if currentNode.getLeftNode() != None:
+               curLBalance = super(AVLTree, self).recGetHeight(currentNode.getLeftNode().getLeftNode()) - super(AVLTree, self).recGetHeight(currentNode.getLeftNode().getRightNode())
+            if currentNode.getRightNode() != None:
+               curRBalance = super(AVLTree, self).recGetHeight(currentNode.getRightNode().getLeftNode()) - super(AVLTree, self).recGetHeight(currentNode.getRightNode().getRightNode())
+
+            #Check if it a Left unbalance
+            if curBalance > 1:
+               #If left right case 
+               if curLBalance < 0:
+                  currentNode.setLeftNode(rotateLeft(currentNode.getLeftNode()))
+               tempNode = self.rotateRight(currentNode)
+            #Right unbalance
+            elif curBalance < -1:
+               #If right left case
+               if curRBalance > 0:
+                  currentNode.setRightNode(self.rotateRight(currentNode.getRightNode()))
+               tempNode = self.rotateLeft(currentNode)
+         
+            #Sets the parent node to be the correct rotated node or set the new root if old root was rotated
+            if parCurNode != None:
+               if parCurNode.getLeftNode() == currentNode:
+                  parCurNode.setLeftNode(tempNode)
+               elif parCurNode.getRightNode() == currentNode:
+                  parCurNode.setRightNode(tempNode)
+               break;
+            else:
+               self.root = tempNode
+               break;
      
 #****************************************************************************
 #Recursive Version of Methods
@@ -158,3 +215,54 @@ class AVLTree(BSTree):
 
       return currentNode
 
+   #PURPOSE:   Removes the given data from the tree and make sure the tree is still balanced
+   #INPUT:     data           - The data to remove from the tree
+   #           currentNode    - The node check if it match the data
+   #OUTPUT:    Return's the updated node 
+   def recRemoveNode(self, data, currentNode):
+      if currentNode == None:
+         return None
+      else:
+         if currentNode.getData() > data:
+            currentNode.setLeftNode(self.recRemoveNode(data,currentNode.getLeftNode()))
+         elif currentNode.getData() < data:
+            currentNode.setRightNode(self.recRemoveNode(data,currentNode.getRightNode()))
+         else:
+            if currentNode.getLeftNode() != None and currentNode.getRightNode() != None:
+               tempData = super(AVLTree, self).recFindSmallestNodeData(currentNode.getRightNode())
+               currentNode.setRightNode(recRemoveNode(tempData, currentNode.getRightNode()))
+               currentNode.setData(tempData)
+            elif currentNode.getLeftNode() != None or currentNode.getRightNode() != None:
+               tempChild = None
+               if currentNode.getLeftNode() != None:
+                  tempChild = currentNode.getLeftNode()
+               elif currentNode.getRightNode() != None:
+                  tempChild = currentNode.getRightNode()
+               del currentNode
+               currentNode = tempChild
+            else:
+               del currentNode
+               return None
+         
+         curBalance = super(AVLTree, self).recGetHeight(currentNode.getLeftNode()) - super(AVLTree, self).recGetHeight(currentNode.getRightNode())
+         curLBalance = 0
+         curRBalance = 0
+         if currentNode.getLeftNode() != None:
+            curLBalance = super(AVLTree, self).recGetHeight(currentNode.getLeftNode().getLeftNode()) - super(AVLTree, self).recGetHeight(currentNode.getLeftNode().getRightNode())
+         if currentNode.getRightNode() != None:
+            curRBalance = super(AVLTree, self).recGetHeight(currentNode.getRightNode().getLeftNode()) - super(AVLTree, self).recGetHeight(currentNode.getRightNode().getRightNode())
+                     
+         #Check if it a Left unbalance
+         if curBalance > 1:
+            #If left right case 
+            if curLBalance < 0:
+               currentNode.setLeftNode(rotateLeft(currentNode.getLeftNode()))
+            currentNode = self.rotateRight(currentNode)
+         #Right unbalance
+         elif curBalance < -1:
+            #If right left case
+            if curRBalance > 0:
+               currentNode.setRightNode(self.rotateRight(currentNode.getRightNode()))
+            currentNode = self.rotateLeft(currentNode)
+
+         return currentNode
