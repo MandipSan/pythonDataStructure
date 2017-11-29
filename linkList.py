@@ -112,14 +112,12 @@ class LinkList(object):
    def removeAtEnd(self):
       if self.end != None:
          if self.end.getPrevNode() == None:
-            del self.end
             self.end = None
             self.head = None
          else:
             temp = self.end
             self.end = self.end.getPrevNode()
             self.end.setNextNode(None)
-            del temp
 
    #PURPOSE:   Removes node at the beginning of the list
    #INPUT:     NONE
@@ -127,14 +125,11 @@ class LinkList(object):
    def removeAtBeginning(self):
       if self.head != None:
          if self.head.getNextNode() == None:
-            del self.head
             self.head = None
             self.end = None
          else:
-            temp = self.head
             self.head = self.head.getNextNode()
             self.head.setPrevNode(None)
-            del temp
 
    #PURPOSE:   Removes node for given data
    #INPUT:     data     - The data for the node to be removed 
@@ -146,7 +141,6 @@ class LinkList(object):
          temp.setNextNode(foundNode.getNextNode())
          temp = foundNode.getNextNode()
          temp.setPrevNode(foundNode.getPrevNode())
-         del foundNode 
 
    #PURPOSE:   Print's the list
    #INPUT:     NONE
