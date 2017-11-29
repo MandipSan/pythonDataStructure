@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 #Created By:      Mandip Sangha
-#Last Modified:   11/23/2017
+#Last Modified:   11/29/2017
 
 from node import *
 
@@ -148,12 +148,25 @@ class LinkList(object):
          temp.setPrevNode(foundNode.getPrevNode())
          del foundNode 
 
-   #PURPOSE:   Dump the list for testing
+   #PURPOSE:   Print's the list
    #INPUT:     NONE
    #OUTPUT:    NONE
-   def dumpList(self):
+   def printList(self):
       temp = self.head
       while temp != None:
-         print temp.getData()
-         print "->"
+         print temp.getData() , "->"
          temp = temp.getNextNode();
+
+   #PURPOSE:   Dump the list for testing
+   #INPUT:     NONE
+   #OUTPUT:    String of the data seperated by ,
+   def dumpList(self):
+      output = ""
+      temp = self.head
+      while temp != None:
+         if output == "":
+            output = str(temp.getData())
+         else:
+            output = output + "," + str(temp.getData())
+         temp = temp.getNextNode();
+      return output
