@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 #Created By:      Mandip Sangha
-#Last Modified:   11/23/2017
+#Last Modified:   11/29/2017
 
 #****************************************************************************
 #NOTE:
@@ -21,6 +21,7 @@ class Queue(object):
       self.queueArrFront = -1
       self.queueArrEnd = 0
       self.queueArrSize = queueArrSize
+      self.queueArrCurSize = 0
       #initializes the array to the size
       self.queueArr = [0 for i in range(queueArrSize)] 
 
@@ -58,6 +59,12 @@ class Queue(object):
    def getSize(self):
       return self.queueList.count()
 
+   #PURPOSE:   Dump the queue for testing 
+   #INPUT:     NONE
+   #OUTPUT:    Return a string of the data separated by , 
+   def dumpQueue(self):
+      return self.queueList.dumpList()
+
 #***********************************************************************
 #Queue use circular array version
 #***********************************************************************
@@ -68,6 +75,7 @@ class Queue(object):
    def arrEnqueue(self, data):
       if not self.arrIsFull():
          self.queueArr[self.queueArrEnd] = data
+         self.queueArrCurSize += 1
          if self.queueArrFront == -1:
             self.queueArrFront = self.queueArrEnd
          tempEnd = 0
@@ -82,6 +90,7 @@ class Queue(object):
       if not self.arrIsEmpty():
          if self.queueArrFront + 1 < self.queueArrSize:
             self.queueArrFront = self.queueArrFront + 1
+            self.queueArrCurSize -= 1
          else:
             self.queueArrFront = 0
          if self.queueArrFront == self.queueArrEnd:
@@ -109,4 +118,19 @@ class Queue(object):
    #INPUT:     NONE
    #OUTPUT:    Return integer of the current size of the queue
    def arrGetSize(self):
-      return self.queueArrSize
+      return self.queueArrCurSize
+
+   #PURPOSE:   Dump the queue for testing 
+   #INPUT:     NONE
+   #OUTPUT:    Return a string of the data separated by , 
+   def dumpArrQueue(self):
+      output = str(self.queueArr[self.queueArrFront])
+      i = self.queueArrFront + 1
+      if i >= self.queueArrSize:
+         i = 0
+      while i != self.queueArrEnd and i != -1:
+         output = output + "," + str(self.queueArr[i])
+         i += 1
+         if i >= self.queueArrSize:
+            i = 0
+      return output
