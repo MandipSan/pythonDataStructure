@@ -157,7 +157,7 @@ class AVLTree(BSTree):
             if curBalance > 1:
                #If left right case 
                if curLBalance < 0:
-                  currentNode.setLeftNode(rotateLeft(currentNode.getLeftNode()))
+                  currentNode.setLeftNode(self.rotateLeft(currentNode.getLeftNode()))
                tempNode = self.rotateRight(currentNode)
             #Right unbalance
             elif curBalance < -1:
