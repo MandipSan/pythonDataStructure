@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 #Created By:      Mandip Sangha
-#Last Modified:   11/28/2017
+#Last Modified:   12/01/2017
 
 #****************************************************************************
 #NOTE:
@@ -133,10 +133,11 @@ class BSTree(object):
          currentNode = currentNode.getLeftNode()
       return startNode.getData()
 
-   #PURPOSE:   Print's out tree in order(left, root, right)
+   #PURPOSE:   Print's out tree in order(left, root, right) to a string
    #INPUT:     NONE
-   #OUTPUT:    NONE
+   #OUTPUT:    Return a string of the print out
    def printInOrder(self):
+      output = ""
       printStack = Stack()
       currentNode = self.root.getLeftNode()
       if self.root != None:
@@ -149,17 +150,22 @@ class BSTree(object):
          else:
             temp = printStack.top()
             printStack.pop()
-            print temp.getData()
+            if output == "":
+               output = str(temp.getData())
+            else:
+               output = output + "," + str(temp.getData())
             currentNode = temp.getRightNode()
+      return output
 
-   #PURPOSE:   Print's out tree preorder(root, left, right)
+   #PURPOSE:   Print's out tree preorder(root, left, right) to a string
    #INPUT:     NONE
-   #OUTPUT:    NONE
+   #OUTPUT:    Return a string of the print out
    def printPreOrder(self):
+      output = ""
       printStack = Stack()
       
       if self.root != None:
-         print self.root.getData()
+         output = str(self.root.getData())
          if self.root.getRightNode() != None:
             printStack.push(self.root.getRightNode())
          if self.root.getLeftNode() != None:
@@ -168,16 +174,18 @@ class BSTree(object):
       while not printStack.isEmpty():
          currentNode = printStack.top()
          printStack.pop()
-         print currentNode.getData()
+         output = output + "," + str(currentNode.getData())
          if currentNode.getRightNode() != None:
             printStack.push(currentNode.getRightNode())
          if currentNode.getLeftNode() != None:
             printStack.push(currentNode.getLeftNode())
+      return output
 
-   #PURPOSE:   Print's out tree post order(left, right, root)
+   #PURPOSE:   Print's out tree post order(left, right, root) to a string
    #INPUT:     NONE
-   #OUTPUT:    NONE
+   #OUTPUT:    Return a string of the print out
    def printPostOrder(self):
+      output = ""
       printStack = Stack()
       currentNode = None
 
@@ -200,33 +208,44 @@ class BSTree(object):
                printStack.push(nodeCheck)
                currentNode = nodeCheck.getLeftNode()
             else:
-               print currentNode.getData()
+               if output == "":
+                  output = str(currentNode.getData())
+               else:
+                  output = output + "," + str(currentNode.getData())
                currentNode = None
          else:
             if currentNode.getRightNode() != None:
                printStack.push(currentNode.getRightNode())
             printStack.push(currentNode)
             currentNode = currentNode.getLeftNode()
+      return output
 
-   #PURPOSE:   Print's the tree by it's levels starting from the root(breadth first)
+   #PURPOSE:   Print's the tree by it's levels starting from the root(breadth first) to a string
    #INPUT:     NONE
-   #OUTPUT:    NONE
+   #OUTPUT:    Return a string of the print out
    def printAllLevel(self):
+      output = ""
       tempQue = Queue()
       tempQue.enqueue(self.root)
       while not tempQue.isEmpty():
          currentNode = tempQue.front()
          tempQue.dequeue()
-         print currentNode.getData()
+         if output == "":
+            output = str(currentNode.getData())
+         else:
+            output = output + "," + str(currentNode.getData())
          if currentNode.getLeftNode() != None:
             tempQue.enqueue(currentNode.getLeftNode())
          if currentNode.getRightNode() != None:
             tempQue.enqueue(currentNode.getRightNode())
+      return output
   
    #PURPOSE:   Print's the level given from the node given when level equals one(breadth first)
+   #              to a string
    #INPUT:     level          - The current level 
-   #OUTPUT:    NONE
+   #OUTPUT:    Return a string of the print out
    def printOneLevel(self, level):
+      output = ""
       curLevel = 1
       numOfNodeAtCurLvl = 1
       numOfNodeAtNextLvl = 0
@@ -248,7 +267,11 @@ class BSTree(object):
                numOfNodeAtNextLvl = 0
                curLevel += 1
          else:
-            print currentNode.getData()
+            if output == "":
+               output = str(currentNode.getData())
+            else:
+               output = output + "," + str(currentNode.getData())
+      return output
 
    #PURPOSE:   Return's the height of the tree from the given start node
    #INPUT:     currentNode    - The node start the height from
@@ -349,55 +372,78 @@ class BSTree(object):
       else:
          return self.recFindSmallestNodeData(currentNode.getLeftNode())
 
-   #PURPOSE:   Print's out tree in order(left, root, right)
+   #PURPOSE:   Print's out tree in order(left, root, right) to a string
    #INPUT:     currentNode    - The current node to check to print
-   #OUTPUT:    NONE
+   #OUTPUT:    Return a string of the print out
    def recPrintInOrder(self, currentNode):
+      output = ""
       if currentNode == None:
-         return
-      self.recPrintInOrder(currentNode.getLeftNode())  
-      print currentNode.getData()
-      self.recPrintInOrder(currentNode.getRightNode())
+         return output
+      outputLeft = str(self.recPrintInOrder(currentNode.getLeftNode()))
+      outputRoot = str(currentNode.getData())
+      outputRight = str(self.recPrintInOrder(currentNode.getRightNode()))
+      if outputLeft != "": output = outputLeft
+      if outputRoot != "": output = output + "," + outputRoot if output != "" else outputRoot
+      if outputRight != "": output = output + "," + outputRight if output != "" else outputRight
+      return output
 
-   #PURPOSE:   Print's out tree preorder(root, left, right)
+   #PURPOSE:   Print's out tree preorder(root, left, right) to a string
    #INPUT:     currentNode    - The current node to check to print
-   #OUTPUT:    NONE
+   #OUTPUT:    Return a string of the print out 
    def recPrintPreOrder(self, currentNode):
+      output = ""
       if currentNode == None:
-         return
-      print currentNode.getData()
-      self.recPrintPreOrder(currentNode.getLeftNode())
-      self.recPrintPreOrder(currentNode.getRightNode())
+         return output
+      outputRoot = str(currentNode.getData())
+      outputLeft = str(self.recPrintPreOrder(currentNode.getLeftNode()))
+      outputRight = str(self.recPrintPreOrder(currentNode.getRightNode()))
+      if outputRoot != "": output = outputRoot
+      if outputLeft != "": output = output + "," + outputLeft if output != "" else outputLeft
+      if outputRight != "": output = output + "," + outputRight if output != "" else outputRight
+      return output
 
-   #PURPOSE:   Print's out tree post order(left, right, root)
+   #PURPOSE:   Print's out tree post order(left, right, root) to a string
    #INPUT:     currentNode    - The current node to check to print
-   #OUTPUT:    NONE
+   #OUTPUT:    Return a string of the print out
    def recPrintPostOrder(self,currentNode):
+      output = ""
       if currentNode == None:
-         return
-      self.recPrintPostOrder(currentNode.getLeftNode())
-      self.recPrintPostOrder(currentNode.getRightNode())
-      print currentNode.getData() 
+         return output
+      outputLeft = str(self.recPrintPostOrder(currentNode.getLeftNode()))
+      outputRight = str(self.recPrintPostOrder(currentNode.getRightNode()))
+      outputRoot = str(currentNode.getData())
+      if outputLeft != "": output = outputLeft
+      if outputRight != "": output = output + "," + outputRight if output != "" else outputRight
+      if outputRoot != "": output = output + "," + outputRoot if output != "" else outputRoot
+      return output
 
-   #PURPOSE:   Print's the tree by it's levels starting from the root(breadth first)
+   #PURPOSE:   Print's the tree by it's levels starting from the root(breadth first) to a string
    #INPUT:     NONE
-   #OUTPUT:    NONE
+   #OUTPUT:    Return a string of the print out
    def recPrintAllLevel(self):
+      output = ""
       for i in range(1, self.recGetHeight(self.root)+1):
-         self.recPrintOneLevel(self.root, i)
+            output = str(self.recPrintOneLevel(self.root, i)) if output == "" else output + "," + str(self.recPrintOneLevel(self.root, i))
+      return output
 
-   #PURPOSE:   Print's the level given from the node given when level equals one
+   #PURPOSE:   Print's the level given from the node given when level equals one to a string
    #INPUT:     currentNode    - The node to check if it is at level one
    #           level          - The current level 
-   #OUTPUT:    NONE
+   #OUTPUT:    Reutrn a string of the print out
    def recPrintOneLevel(self, currentNode, level):
+      output = ""
+      outputLeft = ""
+      outputRight = ""
       if currentNode == None:
-         return
+         return output
       if level == 1:
-         print currentNode.getData()
+         output = str(currentNode.getData())
       else:
-         self.recPrintOneLevel(currentNode.getLeftNode(),level-1)
-         self.recPrintOneLevel(currentNode.getRightNode(), level-1)
+         outputLeft = str(self.recPrintOneLevel(currentNode.getLeftNode(),level-1))
+         outputRight = str(self.recPrintOneLevel(currentNode.getRightNode(), level-1))
+      if outputLeft != "": output = output + "," + outputLeft if output != "" else outputLeft
+      if outputRight != "": output = output + "," + outputRight if output != "" else outputRight
+      return output
    
    #PURPOSE:   Return's the height of the tree from the given start node
    #INPUT:     currentNode    - The node to start checking the height from
