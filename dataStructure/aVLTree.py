@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 #Created By:      Mandip Sangha
-#Last Modified:   11/28/2017
+#Last Modified:   12/02/2017
 
 from bSTree import *
 
@@ -202,7 +202,7 @@ class AVLTree(BSTree):
       if curBalance > 1:
          #If left right case 
          if currentNode.getLeftNode().getData() < data:
-            currentNode.setLeftNode(rotateLeft(currentNode.getLeftNode()))
+            currentNode.setLeftNode(self.rotateLeft(currentNode.getLeftNode()))
 
          return self.rotateRight(currentNode)
       #Right unbalance
@@ -256,7 +256,7 @@ class AVLTree(BSTree):
          if curBalance > 1:
             #If left right case 
             if curLBalance < 0:
-               currentNode.setLeftNode(rotateLeft(currentNode.getLeftNode()))
+               currentNode.setLeftNode(self.rotateLeft(currentNode.getLeftNode()))
             currentNode = self.rotateRight(currentNode)
          #Right unbalance
          elif curBalance < -1:
